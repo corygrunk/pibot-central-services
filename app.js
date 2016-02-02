@@ -16,8 +16,8 @@ var server = http.createServer( function(req, res) {
       body += data;
     });
     req.on('end', function () {
-      console.log(req.headers.token);
-      console.log(APITOKEN);
+      // console.log(req.headers.token);
+      // console.log(APITOKEN);
       if (req.headers.token === APITOKEN) {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(body);
