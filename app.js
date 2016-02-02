@@ -2,8 +2,9 @@ var fs = require('fs');
 var http = require('http');
 var request = require('request');
 var logger = require('./lib/logger');
+var dot
 var PORT = process.env.PORT || 3000;
-var APITOKEN = process.env.TOKEN || null;
+var APITOKEN = process.env.APITOKEN || null;
 
 var server = http.createServer( function(req, res) {
   var body = '';
@@ -15,14 +16,18 @@ var server = http.createServer( function(req, res) {
       body += data;
     });
     req.on('end', function () {
+      console.log(req.headers.token);
+      console.log(APITOKEN);
       if (req.headers.token === APITOKEN) {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(body);
+        console.log('200: ' + body);
         logger.log('200: ' + body);
       } else {
         res.writeHead(401, { 'Content-Type': 'text/html' });
         res.end('Forbidden');
         logger.log('401: Forbidden');
+        console.log('401: Forbidden');
       }
     });
   }
