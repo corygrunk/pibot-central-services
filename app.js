@@ -3,6 +3,7 @@ var http = require('http');
 var request = require('request');
 var logger = require('./lib/logger');
 var PORT = process.env.PORT || 3000;
+var APITOKEN = process.env.TOKEN || null;
 
 var server = http.createServer( function(req, res) {
   var body = '';
@@ -14,28 +15,19 @@ var server = http.createServer( function(req, res) {
       body += data;
     });
     req.on('end', function () {
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(body);
-      logger.log('200: ' + body);
+      if (req.headers.token === APITOKEN) {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(body);
+        logger.log('200: ' + body);
+      } else {
+        res.writeHead(401, { 'Content-Type': 'text/html' });
+        res.end('Forbidden');
+        logger.log('401: Forbidden');
+      }
     });
   }
 });
 
 server.listen(PORT, function () {
   console.log('Listening on port:' + PORT);
-})
-
-var sendPost = function (uri, notifyHeader, notifyBody) {
-  request({
-      url: uri,
-      method: 'POST',
-      headers: {
-          'type': notifyHeader
-      },
-      body: notifyBody
-  }, function(error, response, body){
-      if(error) { console.log(error); } else {
-        console.log(response.statusCode, body);
-      }
-  });
-}
+});
