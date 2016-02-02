@@ -1,23 +1,8 @@
-var sys = require('sys');
-var exec = require('child_process').exec;
-var child;
 var fs = require('fs');
 var http = require('http');
 var request = require('request');
-
-var ip = require('./lib/ip');
 var logger = require('./lib/logger');
-var config = {}
-
-config.server = {
-  "port": 5000,
-  "host": "127.0.0.1",
-}
-
-ip.get(function (ip) {
-  config.server.host = ip;
-});
-console.log(config.server.host);
+var PORT = process.env.PORT || 3000;
 
 var server = http.createServer( function(req, res) {
   var body = '';
@@ -35,14 +20,14 @@ var server = http.createServer( function(req, res) {
     });
   }
 });
-port = config.server.port;
-host = config.server.host;
-server.listen(port, host);
-console.log('Listening at http://' + host + ':' + port);
+
+server.listen(PORT, function () {
+  console.log('Listening on port:' + PORT);
+})
 
 var sendPost = function (uri, notifyHeader, notifyBody) {
   request({
-      url: 'http://' + host + ':' + port,
+      url: uri,
       method: 'POST',
       headers: {
           'type': notifyHeader
