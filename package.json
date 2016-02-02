@@ -1,0 +1,11 @@
+{
+  "name": "pibot-central-services",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "Central Services",
+  "main": "app.js",
+  "dependencies": {
+    "keypress": "^0.2.1",
+    "request": "^2.67.0"
+  }
+}
