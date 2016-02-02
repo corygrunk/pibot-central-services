@@ -2,7 +2,6 @@ var fs = require('fs');
 var http = require('http');
 var request = require('request');
 var logger = require('./lib/logger');
-var dot
 var PORT = process.env.PORT || 3000;
 var APITOKEN = process.env.APITOKEN || null;
 
