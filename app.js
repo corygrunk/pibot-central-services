@@ -4,7 +4,6 @@ var child;
 var fs = require('fs');
 var http = require('http');
 var request = require('request');
-var keypress = require('keypress');
 
 var ip = require('./lib/ip');
 var logger = require('./lib/logger');
@@ -55,31 +54,3 @@ var sendPost = function (uri, notifyHeader, notifyBody) {
       }
   });
 }
-
-// TEST NOTIFICATION 
-var notify = function (notifyHeader, notifyBody) {
-  request({
-      url: 'http://' + host + ':' + port,
-      method: 'POST',
-      headers: {
-          'type': notifyHeader
-      },
-      body: notifyBody
-  }, function(error, response, body){
-      if(error) { console.log(error); } else {
-        console.log(response.statusCode, body);
-      }
-  });
-}
-
-keypress(process.stdin);
-process.stdin.on('keypress', function (ch, key) {
-  if (key && key.ctrl && key.name == 'c') {
-    process.exit();
-  }
-  if (key && key.name === 'p') {
-    notify('', 'Test notification.');
-  }
-});
-process.stdin.setRawMode(true);
-process.stdin.resume();
